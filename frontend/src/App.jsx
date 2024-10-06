@@ -8,6 +8,7 @@ import Contact from './Pages/Contact'
 import MyAppointments from './Pages/MyAppointments'
 import MyProfile from './Pages/MyProfile'
 import Login from './Pages/Login'
+import Footer from './Components/Footer/Footer'
 const App = () => {
   return (
     <>
@@ -22,6 +23,7 @@ const App = () => {
           <Route path='/profile' element={<MyProfile />} />
           <Route path='/login' element={<Login/>}/>
         </Routes>
+        <Footer/>
       </div>
     </>
   )
