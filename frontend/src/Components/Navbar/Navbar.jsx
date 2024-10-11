@@ -29,8 +29,8 @@ const Navbar = () => {
                 </ul>
                 <div className='flex items-center gap-4'>
                     {token ? <div className='flex items-center gap-3 cursor-pointer group relative'>
-                        <img className='w-8 rounded-full' src={assets.profile_pic} alt="" />
-                        <img className='w-2.5' src={assets.dropdown_icon} alt="" />
+                        <img className='w-8 rounded-full' src={assets.profile_pic} alt="img" />
+                        <img className='w-2.5' src={assets.dropdown_icon} alt="img" />
                         <div className='absolute top-0 right-0 pt-14 text-base font-medium text-gray-600 z-20 hidden group-hover:block'>
                             <div className='min-w-48 bg-stone-100 p-4 rounded flex flex-col gap-4'>
                                 <p onClick={() => navigate('/profile')} className='hover:text-black cursor-pointer'>My Profile</p>
@@ -42,12 +42,12 @@ const Navbar = () => {
                         :
                         <button onClick={() => navigate('/login')} className='bg-primary text-white px-8 py-3 rounded-full font-light hidden md:block'>Create account</button>
                     }
-                    <img onClick={() => setShowMenu(true)} className='w-6 md:hidden' src={assets.menu_icon} alt="" />
+                    <img onClick={() => setShowMenu(true)} className='w-6 md:hidden' src={assets.menu_icon} alt="menu" />
                     {/*Mobile menu*/}
                     <div className={`${showMenu?"fixed w-full":"h-0 w-0"} md:hidden right-0 top-0 bottom-0 z-20 overflow-hidden bg-white transition-all`}>
                         <div className='flex items-center justify-between px-5 py-6'>
-                            <img className='w-28' src={assets.logo} alt="" />
-                            <img className='w-8' onClick={() => setShowMenu(false)} src={assets.cross_icon} alt="" />
+                            <img className='w-28' src={assets.logo} alt="logo" />
+                            <img className='w-8' onClick={() => setShowMenu(false)} src={assets.cross_icon} alt="menu" />
                         </div>
                         <ul  onClick={() => setShowMenu(false)} className='flex flex-col  px-5  gap-6 items-center' >
                             <NavLink to='/'>
