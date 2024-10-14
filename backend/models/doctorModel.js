@@ -9,13 +9,11 @@ const doctorSchema = new mongoose.Schema({
     degree: { type: String, required: true },
     experience: { type: String, required: true },
     about: { type: String, required: true },
-    availabe: { type: Boolean, required: true },
+    availabe: { type: Boolean, default: true },
     fees: { type: Number, required: true },
     address: { type: Object, required: true },
     date: { type: Number, required: true },
-    slots_booked: { type: Object, required: true },
-    name: { type: String, default: {} },
-
+    slots_booked: { type: Object, default: {} },
 }, { minimize: false });
 
 const doctorModel = mongoose.models.doctor || mongoose.model('doctor', doctorSchema);
