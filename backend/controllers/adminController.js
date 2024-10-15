@@ -77,18 +77,22 @@ const addDoctor = async(req, res) => {
 const loginAdmin = async(req, res) => {
     try {
         const { email, password } = req.body;
+
+        // Verify email and password against environment variables
         if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASS) {
-            const token = jwt.sign(email + password, process.env.JWT_SECRET)
-            res.json({
+            // Create a token with email as the payload
+            const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+            return res.json({
                 success: true,
                 token
-            })
+            });
         } else {
-            res.json({ success: false, message: "Failed to login!" })
+            return res.status(401).json({ success: false, message: "Failed to login!" });
         }
     } catch (error) {
-        console.log(error);
-        return res.status(500).json({ message: 'An error occurred while adding the doctor.' });
+        console.error(error);
+        return res.status(500).json({ message: 'An error occurred during admin login.' });
     }
-}
+};
 export { addDoctor, loginAdmin };
