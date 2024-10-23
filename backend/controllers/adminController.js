@@ -58,7 +58,7 @@ const addDoctor = async(req, res) => {
 
         // 7. Send a success response
         return res.status(201).json({
-            message: 'Doctor added successfully!',
+            message: 'Doctor added!',
             doctor: {
                 id: newDoctor._id,
                 name: newDoctor.name,
@@ -95,4 +95,17 @@ const loginAdmin = async(req, res) => {
         return res.status(500).json({ message: 'An error occurred during admin login.' });
     }
 };
-export { addDoctor, loginAdmin };
+//api to get all doctors list 
+
+const allDoctors = async(req, res) => {
+
+    try {
+        const doctors = await doctorModel.find({}).select('-password')
+        res.json({ success: true, doctors })
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ message: 'An error occurred during admin login.' });
+    }
+
+}
+export { addDoctor, loginAdmin, allDoctors };
