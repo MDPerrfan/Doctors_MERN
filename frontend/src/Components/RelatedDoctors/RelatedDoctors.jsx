@@ -12,7 +12,6 @@ const RelatedDoctors = ({ docId, speciality }) => {
             setDocData(doctorsData);
         }
     }, [doctors, speciality, docId])
-    console.log(docId,speciality);
 
     return (
         <div className='flex flex-col items-center gap-4 my-16 text-gray-900 md:mx-10'>
