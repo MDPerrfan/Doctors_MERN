@@ -5,7 +5,7 @@ import bcrypt from 'bcrypt'
 import { v2 as cloudinary } from 'cloudinary';
 import doctorModel from "../models/doctorModel.js";
 import appointmentModel from "../models/appointmentModel.js";
-
+import razorpay from 'razorpay'
 //api to register user
 const registerUser = async(req, res) => {
 
@@ -166,25 +166,30 @@ const userAppointment = async(req, res) => {
         }
     } //API to cancel the appointment
 const cancelAppointment = async(req, res) => {
-    try {
-        const { userId, appointmentId } = req.body
-        const appointmentData = await appointmentModel.findById(appointmentId)
-            //verify appointment
-        if (appointmentData.userId !== userId) {
-            return res.josn({ success: true, message: "Unauthorized action" })
+        try {
+            const { userId, appointmentId } = req.body
+            const appointmentData = await appointmentModel.findById(appointmentId)
+                //verify appointment
+            if (appointmentData.userId !== userId) {
+                return res.josn({ success: true, message: "Unauthorized action" })
+            }
+            await appointmentModel.findByIdAndUpdate(appointmentId, { cancelled: true })
+                //releasing doctor slot
+            const { docId, slotDate, slotTime } = appointmentData
+            const doctorData = await doctorModel.findById(docId)
+            let slots_booked = doctorData.slots_booked
+            slots_booked[slotDate] = slots_booked[slotDate].filter(e => e !== slotTime)
+            await doctorModel.findByIdAndUpdate(docId, { slots_booked })
+            res.json({ success: true, message: "Appointment Cancelled!" })
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: error.message });
         }
-        await appointmentModel.findByIdAndUpdate(appointmentId, { cancelled: true })
-            //releasing doctor slot
-        const { docId, slotDate, slotTime } = appointmentData
-        const doctorData = await doctorModel.findById(docId)
-        let slots_booked = doctorData.slots_booked
-        slots_booked[slotDate] = slots_booked[slotDate].filter(e => e !== slotTime)
-        await doctorModel.findByIdAndUpdate(docId, { slots_booked })
-        res.json({ success: true, message: "Appointment Cancelled!" })
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: error.message });
     }
+    //API to make payment of appointment using razorpay
+
+const paymentRazorpay = (req, res) => {
+
 }
 export {
     registerUser,

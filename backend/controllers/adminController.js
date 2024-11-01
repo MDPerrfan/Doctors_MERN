@@ -3,6 +3,7 @@ import doctorModel from '../models/doctorModel.js'; // Assuming you have a Docto
 import validator from 'validator'; // For input validation
 import { v2 as cloudinary } from 'cloudinary';
 import jwt from 'jsonwebtoken'
+import appointmentModel from '../models/appointmentModel.js';
 const addDoctor = async(req, res) => {
     try {
         const { name, email, password, speciality, degree, experience, about, fees, address } = req.body;
@@ -99,13 +100,24 @@ const loginAdmin = async(req, res) => {
 
 const allDoctors = async(req, res) => {
 
+        try {
+            const doctors = await doctorModel.find({}).select('-password')
+            res.json({ success: true, doctors })
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ message: 'An error occurred during admin login.' });
+        }
+
+    }
+    //API to get all appointments 
+const appointmentsAdmin = async(req, res) => {
     try {
-        const doctors = await doctorModel.find({}).select('-password')
-        res.json({ success: true, doctors })
+        const appointments = await appointmentModel.find({})
+        res.json({ success: true, appointments })
     } catch (error) {
         console.error(error);
         return res.status(500).json({ message: 'An error occurred during admin login.' });
     }
 
 }
-export { addDoctor, loginAdmin, allDoctors };
+export { addDoctor, loginAdmin, allDoctors, appointmentsAdmin };
