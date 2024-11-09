@@ -82,7 +82,7 @@ const loginAdmin = async(req, res) => {
         // Verify email and password against environment variables
         if (email === process.env.ADMIN_EMAIL && password === process.env.ADMIN_PASS) {
             // Create a token with email as the payload
-            const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '1h' });
+            const token = jwt.sign({ email }, process.env.JWT_SECRET);
 
             return res.json({
                 success: true,
@@ -111,13 +111,32 @@ const allDoctors = async(req, res) => {
     }
     //API to get all appointments 
 const appointmentsAdmin = async(req, res) => {
+        try {
+            const appointments = await appointmentModel.find({})
+            res.json({ success: true, appointments })
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ message: 'An error occurred during admin login.' });
+        }
+
+    }
+    //API for cancel appointment
+const cancelAppointment = async(req, res) => {
     try {
-        const appointments = await appointmentModel.find({})
-        res.json({ success: true, appointments })
+        const { appointmentId } = req.body
+        const appointmentData = await appointmentModel.findById(appointmentId)
+
+        await appointmentModel.findByIdAndUpdate(appointmentId, { cancelled: true })
+            //releasing doctor slot
+        const { docId, slotDate, slotTime } = appointmentData
+        const doctorData = await doctorModel.findById(docId)
+        let slots_booked = doctorData.slots_booked
+        slots_booked[slotDate] = slots_booked[slotDate].filter(e => e !== slotTime)
+        await doctorModel.findByIdAndUpdate(docId, { slots_booked })
+        res.json({ success: true, message: "Appointment Cancelled!" })
     } catch (error) {
         console.error(error);
-        return res.status(500).json({ message: 'An error occurred during admin login.' });
+        res.status(500).json({ message: error.message });
     }
-
 }
-export { addDoctor, loginAdmin, allDoctors, appointmentsAdmin };
+export { addDoctor, loginAdmin, allDoctors, appointmentsAdmin, cancelAppointment };
