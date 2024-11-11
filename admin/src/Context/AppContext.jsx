@@ -1,12 +1,6 @@
-import axios from "axios";
 import { createContext } from "react";
-import { toast } from "react-toastify";
-
 export const AppContext = createContext()
-
 const AppContextProvider = (props) => {
-    const backendUrl = import.meta.env.VITE_BACKEND_URL
-
     const calculateAge = (dob) => {
         const today = new Date()
         const birthDate = new Date(dob)

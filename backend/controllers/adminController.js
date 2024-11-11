@@ -1,6 +1,8 @@
-import bcrypt from 'bcrypt'; // For password hashing
-import doctorModel from '../models/doctorModel.js'; // Assuming you have a Doctor model for MongoDB
-import validator from 'validator'; // For input validation
+import bcrypt from 'bcrypt';
+import doctorModel from '../models/doctorModel.js';
+import userModel from '../models/userModel.js';
+
+import validator from 'validator';
 import { v2 as cloudinary } from 'cloudinary';
 import jwt from 'jsonwebtoken'
 import appointmentModel from '../models/appointmentModel.js';
@@ -122,21 +124,41 @@ const appointmentsAdmin = async(req, res) => {
     }
     //API for cancel appointment
 const cancelAppointment = async(req, res) => {
-    try {
-        const { appointmentId } = req.body
-        const appointmentData = await appointmentModel.findById(appointmentId)
+        try {
+            const { appointmentId } = req.body
+            const appointmentData = await appointmentModel.findById(appointmentId)
 
-        await appointmentModel.findByIdAndUpdate(appointmentId, { cancelled: true })
-            //releasing doctor slot
-        const { docId, slotDate, slotTime } = appointmentData
-        const doctorData = await doctorModel.findById(docId)
-        let slots_booked = doctorData.slots_booked
-        slots_booked[slotDate] = slots_booked[slotDate].filter(e => e !== slotTime)
-        await doctorModel.findByIdAndUpdate(docId, { slots_booked })
-        res.json({ success: true, message: "Appointment Cancelled!" })
+            await appointmentModel.findByIdAndUpdate(appointmentId, { cancelled: true })
+                //releasing doctor slot
+            const { docId, slotDate, slotTime } = appointmentData
+            const doctorData = await doctorModel.findById(docId)
+            let slots_booked = doctorData.slots_booked
+            slots_booked[slotDate] = slots_booked[slotDate].filter(e => e !== slotTime)
+            await doctorModel.findByIdAndUpdate(docId, { slots_booked })
+            res.json({ success: true, message: "Appointment Cancelled!" })
+        } catch (error) {
+            console.error(error);
+            res.status(500).json({ message: error.message });
+        }
+    }
+    //API to get dashboard data
+const adminDashboard = async(req, res) => {
+    try {
+        const doctors = await doctorModel.find({})
+        const users = await userModel.find({})
+        const appointments = await appointmentModel.find({})
+
+        const dashData = {
+            doctors: doctors.length,
+            appointments: appointments.length,
+            patients: users.length,
+            latestAppointments: appointments.reverse().slice(0, 5)
+        }
+        res.json({ success: true, dashData })
+
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: error.message });
+        res.json({ success: false, message: error.message });
     }
 }
-export { addDoctor, loginAdmin, allDoctors, appointmentsAdmin, cancelAppointment };
+export { addDoctor, loginAdmin, allDoctors, appointmentsAdmin, cancelAppointment, adminDashboard };

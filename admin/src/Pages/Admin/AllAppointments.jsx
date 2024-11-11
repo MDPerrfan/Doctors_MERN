@@ -3,9 +3,9 @@ import { useContext } from 'react'
 import { AdminContext } from '../../Context/AdminContext'
 import { useEffect } from 'react'
 import { AppContext } from '../../Context/AppContext'
-import {assets} from '../../assets/assets'
+import { assets } from '../../assets/assets'
 const AllAppointments = () => {
-  const { adminToken, appointments, getAllappointments,cancelAppointments } = useContext(AdminContext)
+  const { adminToken, appointments, getAllappointments, cancelAppointments } = useContext(AdminContext)
   const { calculateAge, slotDateFormat } = useContext(AppContext)
   useEffect(() => {
     if (adminToken) {
@@ -41,8 +41,8 @@ const AllAppointments = () => {
             <p>{item.docData.fees}</p>
 
             <div className="flex items-center gap-2">
-              {item.cancelled? <p className='text-red-400 text-xs font-medium'>Cancelled</p>:<img onClick={cancelAppointments(item._id)} className='w-10 cursor-pointer' src={assets.cancel_icon} alt="" />
-            }
+              {item.cancelled ? <p className='text-red-400 text-xs font-medium'>Cancelled</p> : <img onClick={() => cancelAppointments(item._id)} className='w-10 cursor-pointer' src={assets.cancel_icon} alt="" />
+              }
             </div>
           </div>
         ))}
