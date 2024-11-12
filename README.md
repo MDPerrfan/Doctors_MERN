@@ -1,4 +1,3 @@
-#Live:- https://doctorsbd24.netlify.app
 # DoctorsBD
 DoctorsBD is an online medical appointment booking platform where users can create accounts, book and manage appointments, pay online, and access information about doctors across various departments. Doctors can create profiles and manage their availability, while admins have full control over system functionalities.
 
