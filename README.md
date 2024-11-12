@@ -94,7 +94,9 @@ To run the project locally, follow these steps:
 
 3. **Admin**:
    - Manage doctors, appointments, and overall system settings.
+Here’s a screenshot of the homepage:
 
+![Homepage Screenshot](https://raw.githubusercontent.com/MDPerrfan/React-Portfolio/refs/heads/main/src/Assets/Projects/doctorsbd.jpg)
 ## Contributing
 
 We welcome contributions! Please follow these steps:
