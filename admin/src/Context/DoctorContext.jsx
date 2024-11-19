@@ -8,7 +8,8 @@ const [docToken, setDocToken] = useState(localStorage.getItem('docToken') ? loca
 
 const value = {
 backendUrl,
-docToken
+docToken,
+setDocToken
 }
 return(
     <DoctorContext.Provider value={value}>
