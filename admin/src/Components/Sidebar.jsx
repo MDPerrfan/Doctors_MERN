@@ -36,19 +36,15 @@ const Sidebar = () => {
         <ul className='text-gray-600 mt-5'>
             <NavLink className={({isActive})=>`flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${isActive?'bg-gray-400 border-r-4 border-primary text-white':''}`} to={'/doctor-dashboard'}>
                 <img src={assets.home_icon} alt="" />
-                <p>Dashboard</p>
+                <p className='hidden md:block'>Dashboard</p>
             </NavLink>
             <NavLink className={({isActive})=>`flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${isActive?'bg-gray-400 border-r-4 border-primary text-white':''}`} to={'/doctor-profile'}>
                 <img src={assets.appointment_icon} alt="" />
-                <p>Profile</p>
+                <p className='hidden md:block'>Profile</p>
             </NavLink>
             <NavLink className={({isActive})=>`flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${isActive?'bg-gray-400 border-r-4 border-primary text-white':''}`} to={'/doctor-appointments'}>
                 <img src={assets.add_icon} alt="" />
-                <p>Appointments</p>
-            </NavLink>
-            <NavLink className={({isActive})=>`flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${isActive?'bg-gray-400 border-r-4 border-primary text-white':''}`} to={'/doctor-list'}>
-                <img src={assets.people_icon} alt="" />
-                <p>Patients List</p>
+                <p className='hidden md:block'>Appointments</p>
             </NavLink>
         </ul>
       }

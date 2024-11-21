@@ -10,9 +10,10 @@ const DoctorContextProvider = (props) => {
     const [appointments, setAppointments] = useState([])
     const getAppointments = async () => {
         try {
-            const { data } = await axios.get(backendUrl + '/api/doctor/doc-appointments', { headers: { docToken } })
+            const { data } = await axios.get(backendUrl + '/api/doctor/doc-appointments',{headers:{docToken}})
             if (data.success) {
                 setAppointments(data.appointments.reverse())
+                console.log(appointments)
             }else{
                 toast.error(data.message);
             }
