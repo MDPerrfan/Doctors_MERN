@@ -28,7 +28,7 @@ const Login = () => {
       }else{
         const {data}= await axios.post(backendUrl+'/api/doctor/login',{email,password})
         if(data.success){
-          localStorage.setItem('docToken',data.token)
+          localStorage.setItem('doctoken',data.token)
           setDocToken(data.token)
           toast.success('Login successful!');
         }else{
