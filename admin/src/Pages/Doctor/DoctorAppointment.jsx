@@ -13,45 +13,90 @@ const DoctorAppointment = () => {
     }
   }, [docToken])
   return (
-    <div className='w-full max-w-6xl m-5'>
-      <p>All appointments</p>
-      <div className='bg-white border rounded text-sm max-h[80vh] min-h-[50vh] overflow-y-scroll'>
-        <div className='max-sm:hidden grid grid-cols-[0.5fr_2fr_1fr_1fr_3fr_1fr_1.5fr] gap-1 py-3 px-1'>
-          <p>#</p>
-          <p>Patient</p>
-          <p>Payment</p>
-          <p>Age</p>
-          <p>Date & Time</p>
-          <p>Fees</p>
-          <p>Action</p>
-        </div>
-        {
-          appointments.map((item, index) => (
-            <div key={index} className="max-sm:flex-wrap  grid grid-cols-[0.5fr_2fr_1fr_1fr_3fr_1fr_1.5fr] gap-1 py-3 px-1 hover:bg-gray-50">
-              <p className='max-sm:hidden'>{index + 1}</p>
-              <div className="flex items-center gap-2">
-                <img src={item.userData.image} alt="Patient" className="w-8 h-8 rounded-full mr-2 " />
-                <p>{item.userData.name}</p>
-              </div>
-              <div >
-                <p className='text-xs inline-block border border-primary px-2 rounded-full'>{item.payment ? "Online" : "CASH"}</p>
-              </div>
-              <p className='max-sm:hidden'>{calculateAge(item.userData.dob)}</p>
-              <p>{slotDateFormat(item.slotDate)}</p>
-              <p>{item.amount}</p>
-              {
-                item.cancelled ? <p>Cancelled</p>
-                  : item.isCompleted ? <p>Completed</p>
-                    : <div className='flex '>
-                      <img onClick={() => completeAppointment(item._id)} className='w-9 cursor-pointer' src={assets.tick_icon} alt="" />
-                      <img onClick={() => cancelAppointment(item._id)} className='w-9 cursor-pointer' src={assets.cancel_icon} alt="" />
-                    </div>
-              }
-            </div>
-          ))
-        }
-      </div>
+    <div className="w-full max-w-6xl m-5">
+  <p className="text-lg font-semibold mb-4">All Appointments</p>
+  <div className="bg-white border rounded text-sm max-h-[80vh] min-h-[50vh] overflow-y-scroll">
+    {/* Header row - Hidden on small screens */}
+    <div className="hidden sm:grid grid-cols-[0.5fr_2fr_1fr_1fr_3fr_1fr_1.5fr] gap-1 py-3 px-2 bg-gray-100 border-b">
+      <p>#</p>
+      <p>Patient</p>
+      <p>Payment</p>
+      <p>Age</p>
+      <p>Date & Time</p>
+      <p>Fees</p>
+      <p>Action</p>
     </div>
+
+    {/* Appointment items */}
+    {appointments.map((item, index) => (
+      <div
+        key={index}
+        className="sm:grid grid-cols-[0.5fr_2fr_1fr_1fr_3fr_1fr_1.5fr] gap-2 py-3 px-2 hover:bg-gray-50 border-b flex flex-col sm:flex-row"
+      >
+        {/* Index */}
+        <p className="hidden sm:block">{index + 1}</p>
+
+        {/* Patient info */}
+        <div className="flex items-center gap-2">
+          <img
+            src={item.userData.image}
+            alt="Patient"
+            className="w-10 h-10 rounded-full object-cover"
+          />
+          <div>
+            <p className="font-medium">{item.userData.name}</p>
+            <p className="text-xs text-gray-500 sm:hidden">Age: {calculateAge(item.userData.dob)}</p>
+          </div>
+        </div>
+
+        {/* Payment */}
+        <div className="flex items-center">
+          <p
+            className={`text-xs inline-block border px-2 py-1 rounded-full ${
+              item.payment ? "border-green-500 text-green-500" : "border-gray-500 text-gray-500"
+            }`}
+          >
+            {item.payment ? "Online" : "CASH"}
+          </p>
+        </div>
+
+        {/* Age (visible on larger screens) */}
+        <p className="hidden sm:block">{calculateAge(item.userData.dob)}</p>
+
+        {/* Date & Time */}
+        <p>{slotDateFormat(item.slotDate)}</p>
+
+        {/* Fees */}
+        <p>{item.amount}</p>
+
+        {/* Actions */}
+        <div className="flex items-center gap-2">
+          {item.cancelled ? (
+            <p className="text-red-400 text-xs font-medium">Cancelled</p>
+          ) : item.isCompleted ? (
+            <p className="text-green-500 text-xs font-medium">Completed</p>
+          ) : (
+            <div className="flex gap-2">
+              <img
+                onClick={() => completeAppointment(item._id)}
+                className="w-6 h-6 cursor-pointer"
+                src={assets.tick_icon}
+                alt="Complete"
+              />
+              <img
+                onClick={() => cancelAppointment(item._id)}
+                className="w-6 h-6 cursor-pointer"
+                src={assets.cancel_icon}
+                alt="Cancel"
+              />
+            </div>
+          )}
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
   )
 }
 
