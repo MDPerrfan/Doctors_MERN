@@ -7,6 +7,6 @@ const doctorRouter = express.Router();
 doctorRouter.get('/list', doctorList)
 doctorRouter.post('/login', doctorLogin)
 doctorRouter.get('/doc-appointments', authDoctor, appointmentsDoctor)
-doctorRouter.post('complete-appointment', authDoctor, appointmentComplete)
-doctorRouter.post('cancel-appointment', authDoctor, appointmentCancel)
+doctorRouter.post('/complete-appointment', authDoctor, appointmentComplete)
+doctorRouter.post('/cancel-appointment', authDoctor, appointmentCancel)
 export default doctorRouter;

@@ -16,11 +16,38 @@ const DoctorContextProvider = (props) => {
             );
             if (data.success) {
                 setAppointments(data.appointments.reverse())
-                console.log(appointments);
             } else {
                 toast.error(data.message);
             }
         } catch (error) {
+            console.log(error);
+            toast.error(error)
+        }
+    }
+    const completeAppointment=async(appointmentId)=>{
+        try{
+            const {data}=await axios.post(backendUrl+'/api/doctor/complete-appointment',{appointmentId},{headers:{docToken}})
+            if(data.success){
+                toast.success(data.message)
+                getAppointments()
+            }else{
+                toast.error(data.message);
+            }
+        }catch (error) {
+            console.log(error);
+            toast.error(error)
+        }
+    }
+    const cancelAppointment=async(appointmentId)=>{
+        try{
+            const {data}=await axios.post(backendUrl+'/api/doctor/cancel-appointment',{appointmentId},{headers:{docToken}})
+            if(data.success){
+                toast.success(data.message)
+                getAppointments()
+            }else{
+                toast.error(data.message);
+            }
+        }catch (error) {
             console.log(error);
             toast.error(error)
         }
@@ -31,7 +58,9 @@ const DoctorContextProvider = (props) => {
         setDocToken,
         appointments,
         setAppointments,
-        getAppointments
+        getAppointments,
+        cancelAppointment,
+        completeAppointment
     }
     return (
         <DoctorContext.Provider value={value}>
