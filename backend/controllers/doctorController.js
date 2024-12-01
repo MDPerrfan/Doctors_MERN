@@ -84,18 +84,50 @@ const appointmentComplete = async(req, res) => {
     }
     //API to cancel appointment completed
 const appointmentCancel = async(req, res) => {
-    try {
-        const { docId, appointmentId } = req.body
-        const appointmentData = await appointmentModel.findById(appointmentId)
-        if (appointmentData && appointmentData.docId === docId) {
-            await appointmentModel.findByIdAndUpdate(appointmentId, { cancelled: true })
-            return res.json({ success: true, message: "Appointment Cancelled!" })
-        } else {
-            return res.json({ success: false, message: "Failed!" })
+        try {
+            const { docId, appointmentId } = req.body
+            const appointmentData = await appointmentModel.findById(appointmentId)
+            if (appointmentData && appointmentData.docId === docId) {
+                await appointmentModel.findByIdAndUpdate(appointmentId, { cancelled: true })
+                return res.json({ success: true, message: "Appointment Cancelled!" })
+            } else {
+                return res.json({ success: false, message: "Failed!" })
 
+            }
+        } catch (error) {
+            console.error("Error in appointmentsDoctor controller:", error);
+            res.status(500).json({ success: false, message: error.message });
         }
+    }
+    //API to get doctor dashboard data
+const getDashboardData = async(req, res) => {
+    try {
+        const { docId } = req.body
+        const appointments = await appointmentModel.find({ docId })
+        let earnings = 0;
+        appointments.map((item) => {
+            if (item.isCompleted || item.payment) {
+                earnings += item.payment;
+            }
+        })
+        let patients = []
+        appointments.map((item) => {
+            if (!patients.includes(item.userId)) {
+                patients.push(item.userId)
+            }
+        })
+        const dashData = {
+            earnings,
+            appointments: appointments.length,
+            patients: patients.length,
+            latestAppointments: appointments.reverse().slice(0, 5)
+        }
+        res.json({
+            success: true,
+            dashData
+        })
     } catch (error) {
-        console.error("Error in appointmentsDoctor controller:", error);
+        console.error("Error in getdashboarddata controller:", error);
         res.status(500).json({ success: false, message: error.message });
     }
 }
@@ -105,5 +137,6 @@ export {
     doctorLogin,
     appointmentsDoctor,
     appointmentCancel,
-    appointmentComplete
+    appointmentComplete,
+    getDashboardData
 }
