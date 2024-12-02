@@ -8,7 +8,12 @@ const DoctorContextProvider = (props) => {
     const backendUrl = import.meta.env.VITE_BACKEND_URL
     const [docToken, setDocToken] = useState(localStorage.getItem('doctoken') ? localStorage.getItem('doctoken') : '')
     const [appointments, setAppointments] = useState([])
-    const [dashData,setDashdata]=useState([])
+    const [dashData,setDashdata]=useState({
+    earnings: 0,
+    appointments: 0,
+    patients: 0,
+    latestAppointments: []
+    })
     const getAppointments = async () => {
         try {
             const { data } = await axios.get(
