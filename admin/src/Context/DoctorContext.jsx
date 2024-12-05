@@ -99,7 +99,8 @@ const DoctorContextProvider = (props) => {
         GetDashData,
         setDashdata,
         getProfileData,
-        profileData
+        profileData,
+        setProfileData
     }
     return (
         <DoctorContext.Provider value={value}>
