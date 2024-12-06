@@ -73,14 +73,14 @@ const MyAppointments = () => {
                 </p>
               </div>
               <div className='flex flex-col justify-end gap-2 '>
-                {!item.cancelled && <button
+                {!item.cancelled&& !item.isCompleted&&<button
                   onClick={() => handlePayment(item.id)}
                   className='sm:min-w-48 py-2 bg-primary rounded-xl text-sm text-white'>
                   Pay Online
                 </button>}
 
                 {
-                  !item.cancelled &&
+                  !item.cancelled &&!item.isCompleted&&
                   <button
                     onClick={() => handleCancelAppointment(item._id)}
                     className='sm:min-w-48 my-3 py-2 bg-gray-200 rounded-xl text-sm  hover:bg-red-500 hover:text-white'>
@@ -88,7 +88,7 @@ const MyAppointments = () => {
                   </button>
                 }
                 {
-                  item.cancelled && <p className='text-sm text-gray-600 border rounded p-3 bg-red-100'>Appointment has been cancelled</p>
+                  item.cancelled && !item.isCompleted&&<p className='text-sm text-gray-600 border rounded p-3 bg-red-100'>Appointment has been cancelled</p>
                 }
 
               </div>
