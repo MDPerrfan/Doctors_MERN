@@ -8,46 +8,58 @@ import appointmentModel from "../models/appointmentModel.js";
 import razorpay from 'razorpay'
 //api to register user
 const registerUser = async(req, res) => {
+    try {
+        const { name, email, password } = req.body;
 
-        try {
-            const { name, email, password } = req.body
-            if (!name || !email || !password) {
-                res.json({ success: false, message: "Missing Details" })
-            }
-            if (!validator.isEmail(email)) {
-                return res.status(400).json({ message: 'Invalid email format.' });
-            }
-
-            if (!validator.isLength(password, { min: 8 })) {
-                return res.status(400).json({ message: 'Password must be at least 8 characters long.' });
-            }
-
-            if (!validator.isLength(name, { min: 3 })) {
-                return res.status(400).json({ message: 'Name must be at least 3 characters long.' });
-            }
-            // 2. Check if the doctor already exists (by email)
-            const existingUser = await userModel.findOne({ email });
-            if (existingUser) {
-                return res.status(400).json({ message: 'User with this email already exists.' });
-            }
-            // 3. Hash the password before saving
-            const hashedPassword = await bcrypt.hash(password, 10);
-
-            const newUser = new userModel({
-                name,
-                email,
-                password: hashedPassword
-            })
-            await newUser.save();
-            const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
-            res.json({ success: true, token })
-        } catch (error) {
-            res.json({ success: false, message: error.message })
-            console.log(error);
+        // 1. Check if all details are provided
+        if (!name || !email || !password) {
+            return res.json({ success: false, message: "Missing Details" });
         }
 
+        // 2. Validate email format
+        if (!validator.isEmail(email)) {
+            return res.status(400).json({ message: 'Invalid email format.' });
+        }
+
+        // 3. Validate password length
+        if (!validator.isLength(password, { min: 8 })) {
+            return res.status(400).json({ message: 'Password must be at least 8 characters long.' });
+        }
+
+        // 4. Validate name length
+        if (!validator.isLength(name, { min: 3 })) {
+            return res.status(400).json({ message: 'Name must be at least 3 characters long.' });
+        }
+
+        // 5. Check if the user already exists
+        const existingUser = await userModel.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ message: 'User with this email already exists.' });
+        }
+
+        // 6. Hash the password
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // 7. Save the new user
+        const newUser = new userModel({
+            name,
+            email,
+            password: hashedPassword
+        });
+        await newUser.save();
+
+        // 8. Generate a token
+        const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+        // 9. Send success response
+        return res.json({ success: true, token });
+    } catch (error) {
+        console.error(error);
+        return res.json({ success: false, message: error.message });
     }
-    //api for user login
+};
+
+//api for user login
 
 const loginUser = async(req, res) => {
         try {
