@@ -1,5 +1,7 @@
 # DoctorsBD
 DoctorsBD is an online medical appointment booking platform where users can create accounts, book and manage appointments, pay online, and access information about doctors across various departments. Doctors can create profiles and manage their availability, while admins have full control over system functionalities.
+Admin:https://doctorsbdadmin.onrender.com
+Client:https://doctorsbd24.onrender.com
 
 ## Table of Contents
 - [Features](#features)
