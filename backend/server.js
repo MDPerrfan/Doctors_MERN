@@ -13,7 +13,14 @@ connectDB()
 connectCloudinary()
     //middlewares
 app.use(express.json())
-app.use(cors())
+const allowedOrigins = [
+    'http://localhost:5173',
+    'https://doctorsbd24.onrender.com'
+]
+app.use(cors({
+    origin: allowedOrigins,
+    credentials: true
+}))
 
 //api endpoints
 app.use('/api/admin', adminRouter)
