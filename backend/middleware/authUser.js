@@ -9,7 +9,7 @@ const authUser = async(req, res, next) => {
         }
         // Verify and decode the token
         const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-        req.body.userId = decodedToken.id
+        req.user = { id: decodedToken.id }; // Set user ID in req.user instead of req.body
         next(); // Proceed to the next middleware or route
     } catch (error) {
         console.error(error);
