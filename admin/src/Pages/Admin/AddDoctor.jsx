@@ -36,8 +36,8 @@ const AddDoctor = () => {
       formData.append('degree', degree);
       formData.append('address',JSON.stringify({line1:address1,line2:address2}));
 
-      const {data}=await axios.post(backendUrl + '/api/admin/add-doctor',formData,{headers:{adminToken}})
-      if(data.success){
+      const {data} = await axios.post(backendUrl + '/api/admin/add-doctor', formData, {headers:{adminToken}})
+      if(data.message === 'Doctor added!') {
         toast.success(data.message);
         setDocImg(false);
         setName('');
@@ -50,12 +50,12 @@ const AddDoctor = () => {
         setDegree('');
         setAddress1('');
         setAddress2('');
-      }else{
+      } else {
         toast.error(data.message);
       }
     } catch (error) {
       console.log(error);
-      toast.error(error.message)
+      toast.error(error.response?.data?.message || error.message)
     }
   };
 
