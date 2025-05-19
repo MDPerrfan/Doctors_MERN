@@ -9,11 +9,16 @@ const AdminContextProvider = (props) => {
     const backendUrl = import.meta.env.VITE_BACKEND_URL
     const [doctors, setDoctors] = useState([]);
     const [appointments, setAppointments] = useState([])
+    const [loading,setLoading]=useState()
+    const [dashData, setDashdata] = useState(false);
+
     const getAllDoctors = async () => {
         try {
+            setLoading(true)
             const { data } = await axios.post(backendUrl + '/api/admin/all-doctor', {}, { headers: { adminToken } });
             if (data.success) {
                 setDoctors(data.doctors);
+                setLoading(false)
             } else {
                 toast.error(data.message);
             }
@@ -39,9 +44,11 @@ const AdminContextProvider = (props) => {
     }
     const getAllappointments = async () => {
         try {
+            setLoading(true)
             const { data } = await axios.get(backendUrl + '/api/admin/appointments', { headers: { adminToken } })
             if (data.success) {
                 setAppointments(data.appointments)
+                setLoading(false)
             } else {
                 toast.error(data.message)
             }
@@ -63,12 +70,13 @@ const AdminContextProvider = (props) => {
             toast.error(error.message);
         }
     }
-    const [dashData, setDashdata] = useState(false);
     const getDashdata = async () => {
+        setLoading(true)
         try {
             const { data } = await axios.get(backendUrl + '/api/admin/admin-dashboard', { headers: { adminToken } })
             if (data.success) {
                 setDashdata(data.dashData)
+                setLoading(false)
             } else {
                 toast.error(data.message)
             }
@@ -86,7 +94,8 @@ const AdminContextProvider = (props) => {
         appointments, setAppointments,
         getAllappointments,
         cancelAppointment,
-        dashData,getDashdata
+        dashData,getDashdata,
+        loading,setLoading
     }
     return (
         <AdminContext.Provider value={value}>

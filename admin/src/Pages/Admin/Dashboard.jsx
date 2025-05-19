@@ -1,16 +1,51 @@
-import React, { useContext, useEffect } from 'react'
+import { useContext, useEffect } from 'react'
 import { AdminContext } from '../../Context/AdminContext'
 import { assets } from '../../assets/assets'
 import { AppContext } from '../../Context/AppContext'
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const Dashboard = () => {
-  const { dashData, getDashdata, cancelAppointment, adminToken } = useContext(AdminContext)
+  const { dashData, getDashdata, cancelAppointment, adminToken,loading } = useContext(AdminContext)
   const { slotDateFormat } = useContext(AppContext)
   useEffect(() => {
     if (adminToken) {
       getDashdata();
     }
   }, [adminToken])
+ if (loading) {
+    return (
+      <div className='m-5'>
+        <div className='flex flex-wrap gap-3'>
+          {Array(3).fill().map((_, i) => (
+            <div key={i} className='bg-white p-4 rounded min-w-52 border-2 border-gray-100'>
+              <Skeleton height={56} width={56} circle />
+              <Skeleton height={20} width={80} className="mt-2" />
+              <Skeleton height={14} width={60} />
+            </div>
+          ))}
+        </div>
+
+        <div className='bg-white mt-10 p-4 rounded border'>
+          <Skeleton height={20} width={150} />
+          <div className='pt-4'>
+            {Array(4).fill().map((_, i) => (
+              <div key={i} className='flex items-center justify-between gap-4 p-4 border-b'>
+                <div className='flex gap-2 items-center'>
+                  <Skeleton circle height={48} width={48} />
+                  <div>
+                    <Skeleton height={16} width={100} />
+                    <Skeleton height={12} width={120} />
+                  </div>
+                </div>
+                <Skeleton height={24} width={60} />
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    )
+  }
   return dashData && (
     <div className='m-5'>
       <div className='flex flex-wrap gap-3'>
