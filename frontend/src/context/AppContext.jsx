@@ -16,7 +16,7 @@ const AppContextProvider = (props) => {
             const { data } = await axios.get(backendUrl + '/api/doctor/list')
             if (data.success) {
                 setDoctors(data.doctors)
-                setLoading(true)
+                setLoading(false)
             } else {
                 toast.error(data.message)
             }
