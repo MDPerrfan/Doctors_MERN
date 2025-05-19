@@ -17,7 +17,8 @@ const allowedOrigins = [
     'http://localhost:5173',
     'https://doctorsbd24.onrender.com',
     'https://doctors-mern.vercel.app',
-    'https://doctors-mern-4frp.vercel.app'
+    'https://doctors-mern-4frp.vercel.app',
+    'https://doctorsbdadmin.onrender.com'
 ]
 app.use(cors({
     origin: allowedOrigins,
