@@ -8,7 +8,7 @@ import axios from 'axios'
 
 const Appointments = () => {
   const { docId } = useParams()
-  const { doctors, currencySymbol, getDoctorsData, backendUrl, token } = useContext(AppContext);
+  const { doctors, currencySymbol, getDoctorsData, backendUrl, token ,userData} = useContext(AppContext);
   const [docInfo, setDocInfo] = useState(null)
   const [docSlots, setDocSlots] = useState([]);
   const [slotIndex, setSlotIndex] = useState(0);
@@ -20,6 +20,8 @@ const Appointments = () => {
     setDocInfo(docInfo);
   }
   const getAvailableSlots = async () => {
+    if (!docInfo) return;
+    
     let slots = [];
   
     let today = new Date();
@@ -50,6 +52,7 @@ const Appointments = () => {
 
         const slotDate=day + "_" + month + "_" + year
         const slotTime = formattedTime
+
         const isSlotAvailable = docInfo.slots_booked[slotDate] &&docInfo.slots_booked[slotDate].includes(slotTime)?false:true;
         if(isSlotAvailable){
           timeSlots.push({
@@ -67,7 +70,6 @@ const Appointments = () => {
   
     setDocSlots(slots);
   };
-  
   const bookAppointment = async () => {
     if (!token) {
       toast.warn("Login to book appointment")
@@ -79,8 +81,8 @@ const Appointments = () => {
       let month = date.getMonth() +1
       let year = date.getFullYear()
       const slotDate = day + "_" + month + "_" + year;
-
-      const { data } = await axios.post(backendUrl + '/api/user/book-appointment', { docId, slotDate, slotTime }, { headers: { token } })
+const userId=userData._id
+      const { data } = await axios.post(backendUrl + '/api/user/book-appointment', {userId, docId, slotDate, slotTime }, { headers: { token } })
       if (data.success) {
         toast.success(data.message)
         getDoctorsData()

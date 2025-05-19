@@ -18,6 +18,8 @@ const MyAppointments = () => {
       const { data } = await axios.get(`${backendUrl}/api/user/user-appointment`, { headers: { token } });
       if (data.success) {
         setAppointments(data.appointment.reverse());
+        console.log(data)
+
       } else {
         toast.error(data.message);
       }
@@ -25,7 +27,6 @@ const MyAppointments = () => {
       console.log(error);
     }
   };
-
   useEffect(() => {
     if (token) {
       getUserAppointments();
