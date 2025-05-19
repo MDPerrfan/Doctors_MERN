@@ -16,7 +16,9 @@ app.use(express.json())
 const allowedOrigins = [
     'http://localhost:5173',
     'https://doctorsbd24.onrender.com',
-    'https://doctorsbdadmin.onrender.com'
+    'https://doctorsbdadmin.onrender.com',
+    'https://doctors-mern.vercel.app',
+    'https://doctors-mern-4frp.vercel.app'
 ]
 app.use(cors({
     origin: allowedOrigins,
