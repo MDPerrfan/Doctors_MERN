@@ -2,8 +2,7 @@ import jwt from 'jsonwebtoken';
 
 const authAdmin = async(req, res, next) => {
     try {
-        const { adminToken } = req.headers; // Token should be passed as 'adminToken' in headers
-
+        const adminToken = req.headers.admintoken;
         if (!adminToken) {
             return res.status(401).json({ success: false, message: "Not authorized" });
         }
