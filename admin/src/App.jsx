@@ -1,5 +1,3 @@
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import React, { useContext } from 'react'
 import Login from './Pages/Login'
 import { AdminContext } from './Context/AdminContext';
@@ -14,6 +12,8 @@ import { DoctorContext } from './Context/DoctorContext';
 import DocDashboard from './Pages/Doctor/DocDashboard';
 import DocProfile from './Pages/Doctor/DocProfile';
 import DoctorAppointment from './Pages/Doctor/DoctorAppointment'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const App = () => {
   const { adminToken } = useContext(AdminContext)
   const { docToken } = useContext(DoctorContext);

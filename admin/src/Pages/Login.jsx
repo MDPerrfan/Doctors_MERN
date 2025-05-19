@@ -3,46 +3,52 @@ import { AdminContext } from '../Context/AdminContext'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 import { DoctorContext } from '../Context/DoctorContext'
+
 const Login = () => {
   const [state, setState] = useState("Admin");
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('')
   const { setAdminToken, backendUrl } = useContext(AdminContext)
-  const {setDocToken}= useContext(DoctorContext)
+  const {setDocToken} = useContext(DoctorContext)
+
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     try {
-      if(state==='Admin'){
-        const {data}= await axios.post(backendUrl+'/api/admin/login',{email,password})
+      if(state === 'Admin'){
+        const {data} = await axios.post(backendUrl+'/api/admin/login', {email, password})
         if(data.success){
-          localStorage.setItem('adminToken',data.token)
+          localStorage.setItem('adminToken', data.token)
           setAdminToken(data.token)
-          toast.success('Login successful!');
-        }else{
-          if (error.response && error.response.status === 401) {
-            toast.error(error.response.data.message || 'Login failed. Please try again.');
-          } else {
-            toast.error(error.message || 'An unexpected error occurred');
-          }
+          toast.success('Login successful!')
+        } else {
+          toast.error(data.message || 'Login failed')
         }
-      }else{
-        const {data}= await axios.post(backendUrl+'/api/doctor/login',{email,password})
+      } else {
+        const {data} = await axios.post(backendUrl+'/api/doctor/login', {email, password})
         if(data.success){
-          localStorage.setItem('doctoken',data.token)
+          localStorage.setItem('doctoken', data.token)
           setDocToken(data.token)
-          toast.success('Login successful!');
-        }else{
-          if (error.response && error.response.status === 401) {
-            toast.error(error.response.data.message || 'Login failed. Please try again.');
-          } else {
-            toast.error(error.message || 'An unexpected error occurred');
-          }
+          toast.success('Login successful!')
+        } else {
+          toast.error(data.message || 'Login failed')
         }
       }
     } catch (error) {
-
+      console.error('Login error:', error)
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        toast.error(error.response.data.message || 'Login failed. Please check your credentials.')
+      } else if (error.request) {
+        // The request was made but no response was received
+        toast.error('No response from server. Please try again.')
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        toast.error('An error occurred. Please try again.')
+      }
     }
   }
+
   return (
     <form onSubmit={onSubmitHandler} className='min-h-[98vh] flex items-center' >
       <div className='flex flex-col gap-3 m-auto items-start p-8 min-w-[350px] m:min-w-96 border rounded-xl text-[#5E5E5E] text-sm shadow-lg'>
