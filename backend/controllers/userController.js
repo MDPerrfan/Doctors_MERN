@@ -99,7 +99,7 @@ const getProfile = async(req, res) => {
     //api to update user profile
 const updateProfile = async(req, res) => {
         try {
-            const userId = req.user.id; // Get userId from auth token
+            const userId = req.user.id;
             const { name, phone, address, dob, gender } = req.body
             const imageFile = req.file
 
@@ -186,7 +186,7 @@ const bookAppointment = async(req, res) => {
     //API to fetch appointment data
 const userAppointment = async(req, res) => {
         try {
-            const userId = req.user.id; // Get userId from auth token
+            const userId = req.user.id;
             const appointment = await appointmentModel.find({ userId })
             return res.json({ success: true, appointment })
         } catch (error) {
@@ -197,7 +197,9 @@ const userAppointment = async(req, res) => {
     //API to cancel the appointment
 const cancelAppointment = async(req, res) => {
         try {
-            const { userId, appointmentId } = req.body
+            const { appointmentId } = req.body
+            const userId = req.user.id;
+
             const appointmentData = await appointmentModel.findById(appointmentId)
                 //verify appointment
             if (appointmentData.userId !== userId) {
