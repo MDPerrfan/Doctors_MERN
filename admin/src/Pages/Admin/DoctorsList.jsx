@@ -17,7 +17,7 @@ const DoctorsList = () => {
         <div className='w-full flex flex-wrap gap-4 pt-5 gap-y-3'>
           {Array(6).fill().map((_, i) => (
             <div key={i} className='border border-indigo-200 rounded-xl max-w-56 overflow-hidden cursor-pointer'>
-              <Skeleton height={150} className='w-full' />
+              <Skeleton height={150} className='w-full min-w-48' />
               <div className='p-4'>
                 <Skeleton height={20} width={`80%`} className='mb-2' />
                 <Skeleton height={14} width={`60%`} className='mb-2' />
