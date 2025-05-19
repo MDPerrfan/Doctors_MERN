@@ -3,18 +3,24 @@ import {useNavigate} from 'react-router-dom'
 import { assets } from '../assets/assets'
 import { AdminContext } from '../Context/AdminContext'
 import { DoctorContext } from '../Context/DoctorContext'
+import { toast } from 'react-toastify'
 
 const Navbar = () => {
-    const {adminToken,setAdminToken}=useContext(AdminContext)
-    const {docToken,setDocToken}=useContext(DoctorContext)
-
+    const {adminToken, setAdminToken} = useContext(AdminContext)
+    const {docToken, setDocToken} = useContext(DoctorContext)
     const navigate = useNavigate()
-    const logout=()=>{
+
+    const logout = () => {
+        if (adminToken) {
+            localStorage.removeItem('adminToken')
+            setAdminToken('')
+        }
+        if (docToken) {
+            localStorage.removeItem('doctoken')
+            setDocToken('')
+        }
+        toast.success('Logged out successfully')
         navigate('/')
-        adminToken && setAdminToken('')
-        adminToken && localStorage.removeItem('docToken');
-        docToken && setDocToken('')
-        docToken && localStorage.removeItem('docToken');
     }
   return (
     <div className='flex justify-between items-center px-4 sm:px-10 py-3 border-b bg-white'>
